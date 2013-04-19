@@ -14,9 +14,13 @@ public class tweetscrapeTweet {
 	private long twitterID;
 	private Date created_at; 
 	private String text;
-	private String screenName;
+
 	//User -- from obj class User
 	private long userID;
+	//User -- from obj class User
+	private long userID;
+	private String screenName;
+	private String userlocationString
 	//Geolocation -- from obj class Geolocation
 	private boolean geoLocation; //if true, there are lat long
 	private double latitude;
