@@ -1,7 +1,7 @@
 /**
  * Author: Beau Bouchard
- * Date: 4/4/2013
- * Last Updated: 4/4/2013
+ * Date: 2013/04/04
+ * Last Updated: 2013/05/01
  * Description:  tweetscrapeEngine  - Class which will utilize Twitter4J 
  * Twitter4J from http://twitter4j.org/en/index.html Copyright 2007 Yusuke Yamamoto
  * 
@@ -18,36 +18,88 @@ import java.util.*;
 public class tweetscrapeEngine 
 {
 	private tweetscrapeGUI tsGUI;
-	//used for testing
+	
+
+	private String currentFilter = "";
+	private String consumerKey = "";
+	private String consumerSecret = "";
+	private String authAccessToken = "";
+	private String authAccessTokenSecret = "";
+
+	
 	public tweetscrapeEngine()
 	{
 		
 	
 	}
+	
 	public tweetscrapeEngine(tweetscrapeGUI inc_tsGUI) throws TwitterException
 	{
-		tsGUI = new tweetscrapeGUI();
+		tsGUI = new tweetscrapeGUI("run");
 		tsGUI = inc_tsGUI;
 		
 	}
+	
 
-	public ConfigurationBuilder getConfig()
+	
+	public void setFilter(String inc_filtervalue){
+		currentFilter = inc_filtervalue;
+	}
+	public void setconsumerKey(String inc_value)
 	{
-		ConfigurationBuilder configBuild = new ConfigurationBuilder();
-		configBuild.setDebugEnabled(true)
-		  .setOAuthConsumerKey("xxx")//Consumer key	xxx
-		  .setOAuthConsumerSecret("xxx")//Consumer secret	xxx
-		  .setOAuthAccessToken("xxx")//Access token
-		  .setOAuthAccessTokenSecret("xxx");//Access token secret	
-		return configBuild;
+		consumerKey = inc_value;
+	}
+	public void setconsumerSecret(String inc_value)
+	{
+		consumerSecret = inc_value;
+	}
+	public void setauthAccessToken(String inc_value)
+	{
+		authAccessToken = inc_value;
+	}
+	public void setauthAccessTokenSecret(String inc_value)
+	{
+		authAccessTokenSecret = inc_value;
 	}
 	
 	public String getFilter()
 	{
-		String pattern = ".*dog.*";  //##testing##
-		return pattern;
+		return currentFilter;
 	}
 	
+	public String getconsumerKey()
+	{
+		return consumerKey;
+	}
+	
+	public String getconsumerSecret()
+	{
+		return consumerSecret;
+	}
+	
+	public String getauthAccessToken()
+	{
+		return authAccessToken;
+	}
+	
+	public String getauthAccessTokenSecret()
+	{
+		return authAccessTokenSecret;
+	}
+	public ConfigurationBuilder getConfig()
+	{
+		ConfigurationBuilder configBuild = new ConfigurationBuilder();
+		configBuild.setDebugEnabled(true)
+		  .setOAuthConsumerKey(getconsumerKey())
+		  .setOAuthConsumerSecret(getconsumerSecret())
+		  .setOAuthAccessToken(getauthAccessToken())
+		  .setOAuthAccessTokenSecret(getauthAccessTokenSecret());
+		return configBuild;
+	}
+	
+
+	
+		
 	public boolean filterTweet(Status status)
 	{
 		boolean passfail = false;
