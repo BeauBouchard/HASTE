@@ -1,39 +1,44 @@
 /**
  * Author: Beau Bouchard
- * Date: 4/4/2013
- * Last Updated: 4/4/2013
+ * Date: 2013/04/04
+ * Last Updated: 2013/05/01
  * Description: Used to store each tweet as object which will then be saved into database
  * 
- * 
+ * ts_f_tweet
+ * ts_f_user
+ * ts_
  *  
  **/
 import java.sql.*;
 
 public class tweetscrapeTweet {
-	private int tweetID;
+
+   //
+	private int tweetID; //Unique
+	private int scrapeID; //the id of the scrape
 	private long twitterID;
-	private Date created_at; 
+	private Date created_at;
+	private Date captured_at; 
 	private String text;
 
-	//User -- from obj class User
-	private long userID;
-	//User -- from obj class User
-	private long userID;
-	private String screenName;
-	private String userlocationString
+	
 	//Geolocation -- from obj class Geolocation
 	private boolean geoLocation; //if true, there are lat long
 	private double latitude;
 	private double longitude;
-	//Place -- from obj class Place
+   
+   
+	//Place -- from obj class Place (as places change we will only have the place information stored with the tweet.)
 	private String placeID;
 	private String country;
 	private String countryCode;
 	private String fullName;
-	private String place_lat;
-	private String place_long;
+	private double place_lat;
+	private double place_long;
 	private String streetAddress;
 	private String place_url;
+   //User's Account's location infromation at time of tweet
+   private String userLocationText;
 	
 	public tweetscrapeTweet()
 	{
