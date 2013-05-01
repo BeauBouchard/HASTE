@@ -2,7 +2,7 @@
 /**
  * Author: Beau Bouchard
  * Date: January 21st, 2013
- * Last Updated: 4/4/2013
+ * Last Updated: 2013/05/01
  * Description: GUI class for the tweetscape app. 
  * 
  * 
@@ -22,10 +22,7 @@ import java.awt.Color.*;
 
 public class tweetscrapeGUI extends JFrame implements ActionListener 
 {
-	
 
-
-  
 	// Initializing connection parameters
 	private Socket client;
 	private Socket server;
@@ -33,28 +30,39 @@ public class tweetscrapeGUI extends JFrame implements ActionListener
 	public ArrayList connections; // public variable for listed connections, remove when server/client is removed
 	
 	// Initializing Menu Variables for top dropdown.
-	private JMenuItem exit 		= new JMenuItem("Exit",KeyEvent.VK_X); 				//Exit, with x as the mnemonic
-	private JMenuItem about 	= new JMenuItem("About",KeyEvent.VK_A); 			//About, with A as the mnemonic
-	private JMenuItem stop		= new JMenuItem("Stop Scraper",KeyEvent.VK_Z); 		//Clear, with C as the mnemonic
-	private JMenuItem start 	= new JMenuItem("Start Scraper",KeyEvent.VK_S); 	//Start, with S as the mnemonic
+	//File -
 	private JMenuItem clear 	= new JMenuItem("Clear Log",KeyEvent.VK_C); 	
 	private JMenuItem savelog 	= new JMenuItem("Save Log to File"); 
+	private JMenuItem exit 		= new JMenuItem("Exit",KeyEvent.VK_X); 				//Exit, with x as the mnemonic
+	//Scrape 
+	private JMenuItem apikeys		= new JMenuItem("Enter API Keys");
+	private JMenuItem stop		= new JMenuItem("Stop Scraper",KeyEvent.VK_Z); 		//Clear, with C as the mnemonic
+	private JMenuItem start 	= new JMenuItem("Start Scraper",KeyEvent.VK_S); 	//Start, with S as the mnemonic
+	
+	//Database 
+	// Create Database <-- make not work if database is not running, or database already has the tables created
+	// 
+	//Help - 
+	private JMenuItem about 	= new JMenuItem("About",KeyEvent.VK_A); 			//About, with A as the mnemonic
+
+	private JPanel bottom;
 	private JTextArea txtArea;
-	private JLabel readout = new JLabel(" "); 
-	private JButton color;
+	private JTextArea readout = new JTextArea(" "); 
+
 	
 	// Property variables
 	private boolean running = false; // scraper is currently running?
+	private boolean apikey = false;  // if api key is entered
+	
 	private boolean tablesCreated = false; 
 	
 	private tweetscrapeDB tsDB;
 	private tweetscrapeEngine tse;
-	public tweetscrapeGUI() {
-
-	}
-	public tweetscrapeGUI(tweetscrapeDB inc_tsDB) {
-		tsDB = new tweetscrapeDB();
-		tsDB = inc_tsDB;
+   
+  
+   
+	public tweetscrapeGUI()
+   {
 		try
 		{
 			tse = new tweetscrapeEngine(this);
@@ -63,20 +71,28 @@ public class tweetscrapeGUI extends JFrame implements ActionListener
 		{
 			
 		}
+      
+      try
+		{
+			tsDB = new tweetscrapeDB(this);
+		}
+		catch(Exception tw)
+		{
+			
+		}
 	}
-	public tweetscrapeGUI(tweetscrapeDB inc_tsDB,tweetscrapeEngine  inc_tse) {
+   
+	public tweetscrapeGUI(String inc_str) 
+	{
 		
-		tsDB = new tweetscrapeDB();
-		tsDB = inc_tsDB;
-		tse = new tweetscrapeEngine();
-		tse = inc_tse;
+	
 	}
 	
 	public void initializeGUI() {
 		
 
 		setTitle("tweetscrape -- Scrape twitter the easy way");
-		setSize( 500, 300 );
+		setSize( 800, 600 );
 		setLocationRelativeTo(null);
 		setLayout(new BorderLayout());
 		JMenuBar topmenu = new JMenuBar();
@@ -85,42 +101,48 @@ public class tweetscrapeGUI extends JFrame implements ActionListener
 		// Top Most Menu Titles
 		JMenu file = new JMenu("File"); 				//Menu - File
 			file.setMnemonic(KeyEvent.VK_F); 		//Setting the mnemonic character to F
+		JMenu scrape = new JMenu("Scrape"); 			//Menu - Database
 		JMenu database = new JMenu("Database"); 			//Menu - Database
 		JMenu help = new JMenu("Help"); 				//Menu - Help
 			help.setMnemonic(KeyEvent.VK_H); 
 
 			
 			topmenu.add(file);
-				file.add(start);
-				file.add(stop);
 				file.add(savelog);
 				file.add(clear);
 				file.add(exit);
+			topmenu.add(scrape);
+				scrape.add(apikeys);
+				scrape.add(start);
+				scrape.add(stop);
 			topmenu.add(database);
+
 				//database.add(Create Tables);
 				//database.add(Readout);
 			topmenu.add(help);
 				help.add(about);
-
-
-		
-			
+				
 			//txtArea.setLineWrap(true);
-			txtArea = new JTextArea(9,42);
+			txtArea = new JTextArea(16,70);
 			txtArea.setLineWrap(true);
-			JPanel window = new JPanel();
-			window.add( txtArea );
-			add(window, BorderLayout.NORTH);
-		
 			
-			JPanel bottom = new JPanel();
+			JPanel top = new JPanel();
 			JPanel center = new JPanel();
 			
-			center.add(readout);
+			bottom = new JPanel();
+			Color color = UIManager.getColor ( "Panel.background" );
 			
+				top.add( txtArea );
+			add(top, BorderLayout.NORTH);
+			readout.setBackground(color);
+			top.setBackground(color);
+			center.setBackground(color);
+			bottom.setBackground(color);
+			//.setOpaque(true);
+			
+			bottom.setLayout(new GridLayout(1,2));
+			bottom.add(readout);
 			center.setLayout(new GridLayout(2,1));
-			
-			
 			add(center, BorderLayout.CENTER);
 			add(bottom, BorderLayout.SOUTH);
 			
@@ -130,6 +152,8 @@ public class tweetscrapeGUI extends JFrame implements ActionListener
 			start.addActionListener(this);
 			stop.addActionListener(this);
 			savelog.addActionListener(this);
+			apikeys.addActionListener(this);
+		
 			
 			setDefaultCloseOperation( DO_NOTHING_ON_CLOSE );
 			setVisible( true );
@@ -153,8 +177,16 @@ public class tweetscrapeGUI extends JFrame implements ActionListener
 		running = incRunning;
 	}
 	
+	public boolean getRunning(){
+		return running;
+	}
+	
 	public void start()
 	{
+		if(!apikey)
+		{
+			promptAPIkeys();
+		}
 			if(getRunning())
 			{
 				outputText("Scraper is already running...");
@@ -185,11 +217,6 @@ public class tweetscrapeGUI extends JFrame implements ActionListener
 			outputText("Stopping the Scraper at: " + getTimeStamp());
 			//stop scraping of twitter
 		}
-	}
-	
-	
-	public boolean getRunning(){
-		return running;
 	}
 	
 	public void exit()
@@ -233,6 +260,41 @@ public class tweetscrapeGUI extends JFrame implements ActionListener
 	{
 		tablesCreated = tsDB.tablesCreated();
 	}
+	public void promptAPIkeys()
+	{
+		outputText("Prompting user for API key");
+		String consumerKey = "";
+		String consumerSecret = "";
+		String authAccessToken = "";
+		String authAccessTokenSecret = "";
+		
+		consumerKey 			= promptforAPIKey("Please enter your Consumer Public Key");
+		consumerSecret 			= promptforAPIKey("Please enter your Consumer Secret Key");
+		authAccessToken 		= promptforAPIKey("Please enter your Auth Access Token");
+		authAccessTokenSecret 	= promptforAPIKey("Please enter your Auth Access Secret Token");
+		
+		tse.setconsumerKey(consumerKey);
+		tse.setconsumerSecret(consumerSecret);
+		tse.setauthAccessToken(authAccessToken);
+		tse.setauthAccessTokenSecret(authAccessTokenSecret);
+		displayAPIKey();
+		apikey = true; 
+		outputText("New API keys entered successfully");
+	  }
+	
+	public void displayAPIKey()
+	{
+		readout.setText("   Consumer Public Key: \t"		+tse.getconsumerKey() +"\n"
+					   +"   Consumer Secret Key: \t"							+tse.getconsumerSecret() +"\n"
+					   +"   Auth Access Token: \t"							+tse.getauthAccessToken() +"\n"
+					   +"   Auth Access Secret Token: \t"							+tse.getauthAccessTokenSecret()	+"\n\n\n");
+	}
+	
+	public String promptforAPIKey(String message)
+	{
+		String authConsumerKey = JOptionPane.showInputDialog(bottom,message,null);
+		return authConsumerKey;
+	}
 	
 	// Top menu / button actions
 	public void actionPerformed(ActionEvent ea)
@@ -245,6 +307,9 @@ public class tweetscrapeGUI extends JFrame implements ActionListener
 			}
 			else if(action.equals("About")){
 				about();
+			}
+			else if(action.equals("Enter API Keys")){
+				promptAPIkeys();
 			}
 			else if(action.equals("Start Scraper")){
 				start();
