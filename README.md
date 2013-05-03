@@ -14,10 +14,7 @@ If you have questions about the usage of this application, or its upkeep, you ca
 
 Usage 
 ---
-Run the application by running the following commands:
 
-java -cp ./lib/twitter4j-core-3.0.3.jar; . twitter4j
-javac ./src/tweetscrapeMain.java
 
 You will need to include the twitter4j class path into your Java Build Path inorder to run this applciation. 
 
