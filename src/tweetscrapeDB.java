@@ -1,7 +1,7 @@
 /**
  * Author: Beau Bouchard
  * Date: 2013/04/02
- * Last Updated: 2013/05/01
+ * Last Updated: 2013/05/06
  * Description: Used to access the database in the tweetscrape app.
  * 
  * 
@@ -131,6 +131,12 @@ public class tweetscrapeDB
    		"`userlocationtext` int(11) DEFAULT NULL," +
    		"PRIMARY KEY (`tweetid`)" +
    		") ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;";
+   }
+   
+   public void createUserDBT()
+   {
+   	
+   
    }
 	
 	public void insertTweet()
