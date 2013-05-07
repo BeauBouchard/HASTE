@@ -1,4 +1,4 @@
-tweetscape
+tweetscrape
 ==========
 
 Author: Beau Bouchard (@beaubouchard) 
