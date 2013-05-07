@@ -2,7 +2,7 @@
 /**
  * Author: Beau Bouchard
  * Date: January 21st, 2013
- * Last Updated: 2013/05/01
+ * Last Updated: 2013/05/06
  * Description: GUI class for the tweetscape app. 
  * 
  * 
@@ -34,14 +34,17 @@ public class tweetscrapeGUI extends JFrame implements ActionListener
 	private JMenuItem clear 	= new JMenuItem("Clear Log",KeyEvent.VK_C); 	
 	private JMenuItem savelog 	= new JMenuItem("Save Log to File"); 
 	private JMenuItem exit 		= new JMenuItem("Exit",KeyEvent.VK_X); 				//Exit, with x as the mnemonic
+	
 	//Scrape 
-	private JMenuItem apikeys		= new JMenuItem("Enter API Keys");
+	private JMenuItem dbcreds	= new JMenuItem("Enter Database Credentials");
+	private JMenuItem apikeys	= new JMenuItem("Enter API Keys");
 	private JMenuItem stop		= new JMenuItem("Stop Scraper",KeyEvent.VK_Z); 		//Clear, with C as the mnemonic
 	private JMenuItem start 	= new JMenuItem("Start Scraper",KeyEvent.VK_S); 	//Start, with S as the mnemonic
 	
 	//Database 
 	// Create Database <-- make not work if database is not running, or database already has the tables created
 	// 
+	
 	//Help - 
 	private JMenuItem about 	= new JMenuItem("About",KeyEvent.VK_A); 			//About, with A as the mnemonic
 
@@ -112,10 +115,12 @@ public class tweetscrapeGUI extends JFrame implements ActionListener
 				file.add(clear);
 				file.add(exit);
 			topmenu.add(scrape);
+				scrape.add(dbcreds);
 				scrape.add(apikeys);
 				scrape.add(start);
 				scrape.add(stop);
 			topmenu.add(database);
+			
 
 				//database.add(Create Tables);
 				//database.add(Readout);
@@ -153,6 +158,7 @@ public class tweetscrapeGUI extends JFrame implements ActionListener
 			stop.addActionListener(this);
 			savelog.addActionListener(this);
 			apikeys.addActionListener(this);
+			dbcreds.addActionListener(this);
 		
 			
 			setDefaultCloseOperation( DO_NOTHING_ON_CLOSE );
@@ -260,6 +266,19 @@ public class tweetscrapeGUI extends JFrame implements ActionListener
 	{
 		tablesCreated = tsDB.tablesCreated();
 	}
+	
+	public void promptDBCreds()
+	{
+		outputText("Prompting user Database Credentials");
+		String username = "";
+		String password = "";
+		String address = "";
+		String port = "";
+		
+		username = promptfor("Please enter");
+		password = promptfor("");
+		
+	}
 	public void promptAPIkeys()
 	{
 		outputText("Prompting user for API key");
@@ -268,10 +287,10 @@ public class tweetscrapeGUI extends JFrame implements ActionListener
 		String authAccessToken = "";
 		String authAccessTokenSecret = "";
 		
-		consumerKey 			= promptforAPIKey("Please enter your Consumer Public Key");
-		consumerSecret 			= promptforAPIKey("Please enter your Consumer Secret Key");
-		authAccessToken 		= promptforAPIKey("Please enter your Auth Access Token");
-		authAccessTokenSecret 	= promptforAPIKey("Please enter your Auth Access Secret Token");
+		consumerKey 			= promptfor("Please enter your Consumer Public Key");
+		consumerSecret 			= promptfor("Please enter your Consumer Secret Key");
+		authAccessToken 		= promptfor("Please enter your Auth Access Token");
+		authAccessTokenSecret 	= promptfor("Please enter your Auth Access Secret Token");
 		
 		tse.setconsumerKey(consumerKey);
 		tse.setconsumerSecret(consumerSecret);
@@ -290,7 +309,7 @@ public class tweetscrapeGUI extends JFrame implements ActionListener
 					   +"   Auth Access Secret Token: \t"							+tse.getauthAccessTokenSecret()	+"\n\n\n");
 	}
 	
-	public String promptforAPIKey(String message)
+	public String promptfor(String message)
 	{
 		String authConsumerKey = JOptionPane.showInputDialog(bottom,message,null);
 		return authConsumerKey;
@@ -307,6 +326,9 @@ public class tweetscrapeGUI extends JFrame implements ActionListener
 			}
 			else if(action.equals("About")){
 				about();
+			}
+			else if(action.equals("Enter Database Credentials")){
+				promptDBCreds();
 			}
 			else if(action.equals("Enter API Keys")){
 				promptAPIkeys();
