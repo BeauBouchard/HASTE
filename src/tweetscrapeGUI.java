@@ -275,8 +275,15 @@ public class tweetscrapeGUI extends JFrame implements ActionListener
 		String address = "";
 		String port = "";
 		
-		username = promptfor("Please enter");
-		password = promptfor("");
+		username = promptfor("Please enter Database Username");
+		password = promptfor("Please enter Database Password");
+		address = promptfor("jdbc:mysql://localhost");
+		port = promptfor("Please enter Database Port (ie 3306)");
+		
+		tsDB.setDatabaseUsername(username);
+		tsDB.setDatabasePassword(password);
+		tsDB.setDatabaseAddress(address);
+		tsDB.setDatabasePort(port);
 		
 	}
 	public void promptAPIkeys()
