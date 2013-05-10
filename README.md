@@ -3,6 +3,8 @@ tweetscrape
 
 Author: Beau Bouchard (@beaubouchard) 
 
+
+
 Licence
 ---
 tweetscape is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -21,6 +23,16 @@ You will need to include the twitter4j class path into your Java Build Path inor
 
 Description
 ---
-tweetscape is a simple GUI programmed in Java (compatable java-7-openjdk-amd64) 
-to access twitter's Rest API for simple scraping. The tweetscrape will load tweet information into a postgres database. Which will later be later usesed for independent analysis. 
- 
+Tweetscrape is a small automated software system to connect twitter social media postings to a real natural hazard warning issued from National Oceanic and Atmospheric Administration (NOAA). 
+This simple GUI programmed in Java (compatable java-7-openjdk-amd64) to access twitter'es streaming API to gather tweets specific to one of the listed Hazard/Disasters:
+ * Tornado
+ * Hurricane
+ * Severe Thunderstorm
+ * Flash Flood
+ * Flood
+ * Winter Storm
+ * Special Marine
+ * Non Precipitation
+ * Tsunami
+ * Space Weather
+
