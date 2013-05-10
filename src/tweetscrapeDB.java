@@ -21,8 +21,7 @@ public class tweetscrapeDB
    
    
 	
-	private String databaseUserName;       // Database username
-	private String databasePassword;
+	private String databaseUserName = "root";       // Database username
 	private String databaseAddress = "jdbc:mysql://localhost";
 	private String databasePort = "3306";
 	private String databaseWriterUserName  = prefix + "writer"; // The common username for the inserter. 
@@ -47,10 +46,7 @@ public class tweetscrapeDB
 	
 	}
 	
-	public void setDatabasePassword(String inc_string)
-	{
-		databasePassword = inc_string;
-	}
+
 	
 	public void setDatabaseAddress(String inc_string)
 	{
@@ -89,11 +85,11 @@ public class tweetscrapeDB
       String url = databaseAddress+databasePort+"/";
       String driver = "com.mysql.jdbc.Driver";
       String userName = "root";
-      String password = "password";
+      String pass = "";//getPassword(); 
       try 
       {
          Class.forName(driver).newInstance();
-         conn = DriverManager.getConnection(url+databaseName,userName,password);
+         conn = DriverManager.getConnection(url+databaseName,userName,pass);
          System.out.println("Connected to the database");
          
          
