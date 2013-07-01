@@ -29,5 +29,13 @@ This simple GUI programmed in Java (compatable java-7-openjdk-amd64) to access t
 
 Other custom filters can be added through regular expressions. The saved tweets are stored in a MySql database for later anaysis. 
 
+
+###UML Diagram###
+![Basic Database UML](bin/documentation/media/img/umldiagram0001.png "UML Diagram")
+
+
+###Architecture Diagram###
+![Basic System Architecture](bin/documentation/media/img/architecturev0001.png "Architecture Diagram")
+
 ![Working Screenshot](http://www.beaubouchard.com/wpblog/wp-content/uploads/2013/05/example-1.png "Example of tweetscrape running")
 
