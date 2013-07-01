@@ -37,5 +37,6 @@ Other custom filters can be added through regular expressions. The saved tweets 
 ###Architecture Diagram###
 ![Basic System Architecture](bin/documentation/media/img/architecturev0001.png "Architecture Diagram")
 
+###Demo Screenshot###
 ![Working Screenshot](http://www.beaubouchard.com/wpblog/wp-content/uploads/2013/05/example-1.png "Example of tweetscrape running")
 
