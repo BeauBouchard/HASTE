@@ -1,7 +1,7 @@
 /**
  * Author: Beau Bouchard
- * Date: 2013/04/04
- * Last Updated: 2013/05/01
+ * Date: 4/4/2013
+ * Last Updated: 7/1/2013
  * Description:  tweetscrapeEngine  - Class which will utilize Twitter4J 
  * Twitter4J from http://twitter4j.org/en/index.html Copyright 2007 Yusuke Yamamoto
  * 
@@ -11,8 +11,9 @@
 
 import twitter4j.*;
 import twitter4j.conf.*;
-
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class tweetscrapeEngine 
@@ -20,12 +21,19 @@ public class tweetscrapeEngine
 	private tweetscrapeGUI tsGUI;
 	
 
-	private String currentFilter = "";
+	private String currentFilter = ".*?(tornado|twister|hail).*";
 	private String consumerKey = "";
 	private String consumerSecret = "";
 	private String authAccessToken = "";
 	private String authAccessTokenSecret = "";
-
+	//filter object?
+	//demo filter "^.*\b(tornado|twister|hail)\b.*$"
+	//.*?(tornado|twister|hail).*
+	
+	private Pattern pattern;
+	private Matcher matcher;
+	private boolean filterisset = false;
+	private boolean keysareset = false;
 	
 	public tweetscrapeEngine()
 	{
@@ -40,11 +48,11 @@ public class tweetscrapeEngine
 		
 	}
 	
-
-	
+	/* Mutators/setters */ 
 	public void setFilter(String inc_filtervalue){
 		currentFilter = inc_filtervalue;
 	}
+	
 	public void setconsumerKey(String inc_value)
 	{
 		consumerKey = inc_value;
@@ -62,6 +70,17 @@ public class tweetscrapeEngine
 		authAccessTokenSecret = inc_value;
 	}
 	
+	public void setKeysareset(boolean inc_value)
+	{
+		keysareset = inc_value;
+	}
+	
+	public void setFilterisset(boolean inc_value)
+	{
+		filterisset = inc_value;
+	}
+	
+	/* Accessors/getters */ 
 	public String getFilter()
 	{
 		return currentFilter;
@@ -86,6 +105,18 @@ public class tweetscrapeEngine
 	{
 		return authAccessTokenSecret;
 	}
+	
+	public boolean getKeysareset()
+	{
+		return keysareset;
+	}
+	
+	public boolean getFilterisset()
+	{
+		return filterisset;
+	}
+	
+	
 	public ConfigurationBuilder getConfig()
 	{
 		ConfigurationBuilder configBuild = new ConfigurationBuilder();
@@ -97,6 +128,22 @@ public class tweetscrapeEngine
 		return configBuild;
 	}
 	
+	public void configureFilter()
+	{
+		if(!filterisset)
+		{
+			tsGUI.outputText("Setting up Filter");
+			pattern = Pattern.compile(getFilter(), Pattern.CASE_INSENSITIVE);
+			filterisset = true;
+			tsGUI.outputText("New REGEX filter: " + getFilter() );
+		}
+		else {
+			//filter already set, now resetting filter
+			filterisset = true;
+		}
+		
+	}
+	
 
 	
 		
@@ -105,7 +152,23 @@ public class tweetscrapeEngine
 		boolean passfail = false;
 		String p = getFilter();
 		String message = status.getText();
-		passfail = message.matches(getFilter());
+		//passfail 
+		if(filterisset)
+		{
+			matcher = pattern.matcher(message);
+			passfail = matcher.matches();
+			//System.out.println("match");
+		}
+		else if(!filterisset)
+		{
+			//filter not set
+			System.out.println("Filter is not set");
+		}
+		else
+		{
+			//error
+		}
+		
 		return passfail;
 	}
 	
@@ -113,10 +176,16 @@ public class tweetscrapeEngine
 	{
 		tsGUI.outputText("@" + status.getUser().getScreenName() + " - " + status.getText());
 		System.out.println("@" + status.getUser().getScreenName() + " - " + status.getText());
+		
+		//save to new tweet object?
 	}
 	
 	public void startStreamSearch()
 	{
+		if(!filterisset)
+		{
+			configureFilter();
+		}
 		tsGUI.outputText("Engine online");
 		ConfigurationBuilder cb = new ConfigurationBuilder();
 		cb = getConfig();
