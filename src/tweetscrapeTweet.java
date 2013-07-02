@@ -1,7 +1,7 @@
 /**
  * Author: Beau Bouchard
  * Date: 2013/04/04
- * Last Updated: 2013/05/01
+ * Last Updated: 2013/07/01
  * Description: Used to store each tweet as object which will then be saved into database
  * 
  * ts_f_tweet
@@ -10,35 +10,38 @@
  *  
  **/
 import java.sql.*;
+import java.text.SimpleDateFormat;
+
+import twitter4j.*;
+import twitter4j.conf.*;
 
 public class tweetscrapeTweet {
 
-   //
-	private int tweetID; //Unique
-	private int scrapeID; //the id of the scrape
-	private long twitterID;
-	private Date created_at;
-	private Date captured_at; 
+   /*
+    * 
+    * 				`tweetid` ,
+				`fk_sessionid` ,
+				`fk_twitteruserid` ,
+				`created_at` ,
+				`captured_at` ,
+				`text` ,
+				`lat` ,
+				`long`
+    * */
+    
+	private int tweetid; //Unique
+	private int fk_sessionid; //the id of the scrape
+	private int fk_twitteruserid;
+	private String created_at;
+	private String captured_at; 
 	private String text;
+	private double lat;
+	private double lon; 
 
 	
 	//Geolocation -- from obj class Geolocation
 	private boolean geoLocation; //if true, there are lat long
-	private double latitude;
-	private double longitude;
    
-   
-	//Place -- from obj class Place (as places change we will only have the place information stored with the tweet.)
-	private String placeID;
-	private String country;
-	private String countryCode;
-	private String fullName;
-	private double place_lat;
-	private double place_long;
-	private String streetAddress;
-	private String place_url;
-   //User's Account's location infromation at time of tweet
-   private String userLocationText;
 	
 	public tweetscrapeTweet()
 	{
@@ -47,7 +50,7 @@ public class tweetscrapeTweet {
 		
 	}
 	
-	public tweetscrapeTweet(long inc_twitterID, String text)
+	public tweetscrapeTweet(int inc_twitterID, String text)
 	{
 		
 	
@@ -55,23 +58,40 @@ public class tweetscrapeTweet {
 	}
 	
 	/**
-	 * settweetID
+	 * settweetid
 	 * Description - used for setting the tweetID of object
-	 * @param inc_tweetID - the ID of the tweet obj inside local database
+	 * @param inc_tweetid - the ID of the tweet obj inside local database
 	 */
-	public void settweetID(int inc_tweetID)
+	public void settweetid(int inc_tweetid)
 	{
-		tweetID = inc_tweetID;
+		tweetid = inc_tweetid;
 	}
+	
+	
 	/**
-	 * settwitterID
+	 * setfk_twitteruserid
 	 * Description - used for setting the twitterID of object
 	 * @param inc_twitterID - Incomming ID which maps to twitter's Tweet ID
 	 */
-	public void settwitterID(long inc_twitterID)
+	public void settwitteruserid(int inc_twitterID)
 	{
-		twitterID = inc_twitterID;
+		fk_sessionid = inc_twitterID;
 	}
+	
+	
+	public void setcreated_at(java.util.Date date)
+	{
+		String timeStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date);
+			 
+		
+		created_at = timeStamp;
+	}
+	
+	public void setcaptured_at(String inc_value)
+	{
+		captured_at = inc_value;
+	}
+	
 	/**
 	 * settext
 	 * Description - used for setting the text, or message of twitter post
@@ -82,5 +102,79 @@ public class tweetscrapeTweet {
 		text = inc_text;
 	}
 	
+	public void setgeo(GeoLocation inc_geo)
+	{
+		setlat(inc_geo.getLatitude());
+		setlon(inc_geo.getLongitude());
+	}
+	
+	/**
+	 * setlat
+	 * Description - 
+	 * @param lat - latitude of best guessed location
+	 */
+	public void setlat(double inc_lat)
+	{
+		lat = inc_lat;
+		geoLocation = true;
+	}
+	
+	/**
+	 * setlon
+	 * Description - 
+	 * @param lon - longitude of best guessed location
+	 */
+	public void setlon(double inc_lon)
+	{
+		lon = inc_lon;
+		geoLocation = true;
+	}
+	
+	///GET GET GET 
+	
+	public int gettweetid()
+	{
+		return tweetid;
+	}
+	
+	public int getsessionid()
+	{
+		return fk_sessionid;
+	}
+	
+	public int gettwitteruserid()
+	{
+		return fk_twitteruserid;
+	}
+	
+	public String gettext()
+	{
+		return text;
+	}
+	
+	public String getcreated_at()
+	{
+		return created_at;
+	}
+	
+	
+	public String getcaptured_at()
+	{
+		return captured_at;
+	}
+	
+	public boolean getgeoLocation()
+	{
+		return geoLocation;
+	}
+	
+	public double getlat()
+	{
+		return lat;
+	}
+	public double getlon()
+	{
+		return lon;
+	}
 
 }
