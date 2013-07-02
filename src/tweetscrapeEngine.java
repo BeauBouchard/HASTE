@@ -11,6 +11,8 @@
 
 import twitter4j.*;
 import twitter4j.conf.*;
+
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -19,9 +21,9 @@ import java.util.regex.Pattern;
 public class tweetscrapeEngine 
 {
 	private tweetscrapeGUI tsGUI;
-	
+	private tweetscrapeDB tsDB;
 
-	private String currentFilter = ".*?(tornado|twister|hail).*";
+	private String currentFilter = ".*?(tornado|twister).*";
 	private String consumerKey = "";
 	private String consumerSecret = "";
 	private String authAccessToken = "";
@@ -45,6 +47,15 @@ public class tweetscrapeEngine
 	{
 		tsGUI = new tweetscrapeGUI("run");
 		tsGUI = inc_tsGUI;
+		
+		 try
+			{
+				tsDB = new tweetscrapeDB(tsGUI);
+			}
+			catch(Exception tw)
+			{
+				
+			}
 		
 	}
 	
@@ -172,10 +183,32 @@ public class tweetscrapeEngine
 		return passfail;
 	}
 	
+	public void startDatabase()
+	{
+		
+		tsDB.startDatabase();
+	}
+	
+	/**
+	 * returns a string which is formated as yyyy-MM-dd HH:mm:ss
+	 * @return timeStamp - a string of the date and time, formated as yyyy-MM-dd HH:mm:ss
+	 */
+	public String getTimeStamp()
+	{
+		String timeStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime());
+		return timeStamp; 
+	}
+	
 	public void saveStatus(Status status)
 	{
-		tsGUI.outputText("@" + status.getUser().getScreenName() + " - " + status.getText());
-		System.out.println("@" + status.getUser().getScreenName() + " - " + status.getText());
+		tweetscrapeTweet tstobj = new tweetscrapeTweet();
+		tstobj.settext(status.getText());
+		tstobj.setcreated_at(status.getCreatedAt());
+		tstobj.setcaptured_at(getTimeStamp());
+		if(status.getGeoLocation() != null) {tstobj.setgeo(status.getGeoLocation());}
+		
+		tsDB.insertTweet(tstobj);
+		
 		
 		//save to new tweet object?
 	}
@@ -200,7 +233,13 @@ public class tweetscrapeEngine
 	            	//
 	            	 if(filterTweet(status))
 	            	 { 
+	            		 
+	            		 tsGUI.outputText(status.getText() + " - " + "@" + status.getUser().getScreenName()  );
+	            		// System.out.println("@" + status.getUser().getScreenName() + " - " + status.getText());
 	            		 saveStatus(status);
+	            	 }
+	            	 else{
+	            		// System.out.print("nope");
 	            	 }
 	            }
 
@@ -221,7 +260,7 @@ public class tweetscrapeEngine
 
 	            @Override
 	            public void onStallWarning(StallWarning warning) {
-	                //System.out.println("Got stall warning:" + warning);
+	                System.out.println("Got stall warning:" + warning);
 	            }
 
 	            @Override
