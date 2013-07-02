@@ -1,7 +1,7 @@
 /**
  * Author: Beau Bouchard
  * Date: 4/2/2013
- * Last Updated: 4/4/2013
+ * Last Updated: 7/1/2013
  * Description: Used to access the database in the tweetscrape app.
  * 
  * 
@@ -12,17 +12,18 @@ import java.sql.*;
 
 public class tweetscrapeDB 
 {
-   private tweetscrapeGUI tsGUI;
-   private String prefix                  = "ts_"; // Prefix which is used before tables user and database names
-	private String databaseName            = prefix + "storage"; //tweetscape_essentials 
-	private String tweetTableName          = prefix + "tweet"; // 
-   private String userTableName           = prefix + "user";
-   private String scrapeTableName         = prefix + "scrape"; 
+	private tweetscrapeGUI tsGUI;
+	private String prefix				= "ts_"; // Prefix which is used before tables user and database names
+	private String databaseName			= "tweetscrapeapp"; //tweetscape_essentials 
+	private String tweetTableName		= prefix + "tweet"; // 
+	private String userTableName		= prefix + "user";
+	private String scrapeTableName		= prefix + "scrape"; 
    
    
 	
-	private String databaseUserName = "root";       // Database username
-	private String databaseAddress = "jdbc:mysql://localhost";
+	private String databaseUserName;       // Database username
+	private String databasePassword;
+	private String databaseAddress = "jdbc:mysql://localhost";	//jdbc:mysql://localhost:3306/tweetscrapeapp
 	private String databasePort = "3306";
 	private String databaseWriterUserName  = prefix + "writer"; // The common username for the inserter. 
 	private String databaseReaderUserName  = prefix + "reader"; // Username which will check status of database
@@ -46,7 +47,10 @@ public class tweetscrapeDB
 	
 	}
 	
-
+	public void setDatabasePassword(String inc_string)
+	{
+		databasePassword = inc_string;
+	}
 	
 	public void setDatabaseAddress(String inc_string)
 	{
@@ -66,6 +70,8 @@ public class tweetscrapeDB
 	   return false;
    }
    
+   
+   
 	public void createTables()
 	{
 		
@@ -79,21 +85,25 @@ public class tweetscrapeDB
 
    }
    
-   private Connection startConnection()
+   public void startDatabase()
    {
-      Connection conn = null;
-      String url = databaseAddress+databasePort+"/";
+	    startConnection();
+	    
+	   
+   }
+   private void startConnection()
+   {
+ 
+      //jdbc:mysql://localhost:3306/tweetscrapeapp
+      String url = databaseAddress+":"+databasePort+"/"+databaseName;
       String driver = "com.mysql.jdbc.Driver";
       String userName = "root";
-      String pass = "";//getPassword(); 
+      String password = "lol like i am putting that here :P";
       try 
       {
          Class.forName(driver).newInstance();
-         conn = DriverManager.getConnection(url+databaseName,userName,pass);
+         conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/tweetscrapeapp",userName,password);
          System.out.println("Connected to the database");
-         
-         
-         
       } 
       catch (SQLException qe) {
    		System.out.println("Connection Failed! Check output console");
@@ -102,10 +112,10 @@ public class tweetscrapeDB
 	   }
       catch (Exception e) 
       {
-         System.out.println("NO CONNECTION ");
+         System.out.println("NO CONNECTION  "+ e.getMessage());
+         e.printStackTrace();
       }
       
-      return conn;
    }
    
    private void endConnection(Connection inc_conn)
@@ -130,31 +140,57 @@ public class tweetscrapeDB
    public void createTweetDBT()
    {
    
-   String creationQuery = "CREATE TABLE IF NOT EXISTS `"+tweetTableName+"` (" +
-   		"`tweetid` int(11) NOT NULL AUTO_INCREMENT," +
-   		"`scrapeid` int(11) NOT NULL," +
-   		"`twitterid` int(11) NOT NULL," +
-   		"`created_at` datetime NOT NULL," +
-   		"`captured_at` datetime NOT NULL," +
-   		"`text` varchar(160) NOT NULL," + 
-   		"`geolocation` int(11) NOT NULL," +
-   		"`latlong` point DEFAULT NULL," +
-   		"`placeid` int(11) DEFAULT NULL," +
-   		"`country` int(11) DEFAULT NULL," +
-   		"`countryCode` int(11) DEFAULT NULL," +
-   		"`fullname` int(11) DEFAULT NULL," +
-   		"`place_lat` int(11) DEFAULT NULL," +
-   		"`place_long` int(11) DEFAULT NULL," +
-   		"`streetaddress` int(11) DEFAULT NULL," +
-   		"`place_url` int(11) DEFAULT NULL," +
-   		"`userlocationtext` int(11) DEFAULT NULL," +
-   		"PRIMARY KEY (`tweetid`)" +
-   		") ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;";
+	   //ZyRDvcZ4AWAGGNW4
+   String creationQuery = "";
    }
 	
-	public void insertTweet()
+	public void insertTweet( tweetscrapeTweet inc_tweetobj)
 	{
+		tweetscrapeTweet tweet = inc_tweetobj;
+		PreparedStatement tweet_prest = null;
+		String tweet_statement = "";
+		if(inc_tweetobj.getgeoLocation())
+		{
+			tweet_statement = "INSERT INTO  `ts_tweet` VALUES" + "(NULL , NULL , NULL,?,?,?,?,?)";
+			try{
+		        tweet_prest = conn.prepareStatement(tweet_statement);
+		        tweet_prest.setString(1, inc_tweetobj.getcreated_at()+"");
+		        tweet_prest.setString(2, inc_tweetobj.getcaptured_at()+"");
+		        tweet_prest.setString(3, inc_tweetobj.gettext()+"");
+		        tweet_prest.setDouble(4, inc_tweetobj.getlat());
+		        tweet_prest.setDouble(5, inc_tweetobj.getlon());
+		        
+			}
+			catch( Exception e){}
+		}
+		else
+		{
+			try{
+				tweet_statement = "INSERT INTO  `ts_tweet` VALUES" + "(NULL , NULL , NULL,?,?,?)";
+		        tweet_prest = conn.prepareStatement(tweet_statement);
+		        tweet_prest.setString(1, inc_tweetobj.getcreated_at()+"");
+		        tweet_prest.setString(2, inc_tweetobj.getcaptured_at()+"");
+		        tweet_prest.setString(3, inc_tweetobj.gettext()+"");
+			}
+			catch( Exception e){}
+		}
 		
+
+		try{
+			tweet_prest.executeUpdate();
+		}
+		catch( Exception e){
+			
+			System.out.println(e.getMessage());
+		}
+      
+		
+		/* (
+
+				)
+				VALUES (
+				NULL , NULL , NULL ,  '2013-07-01 16:29:43',  '2013-07-01 16:29:43',  'tornado here, lol check this tyweet out, demo tweet do not use #demo',  '40.7619',  '-73.9763'
+				);*/
 	}
 	
 	public boolean tablesCreated()
