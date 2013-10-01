@@ -129,7 +129,9 @@ public class tweetscrapeGUI extends JFrame implements ActionListener
 				
 			//txtArea.setLineWrap(true);
 			txtArea = new JTextArea(16,70);
-			txtArea.setLineWrap(true);
+			//txtArea.setLineWrap(true);
+			JScrollPane scrollPane = new JScrollPane(txtArea); 
+			
 			
 			JPanel top = new JPanel();
 			JPanel center = new JPanel();
@@ -137,7 +139,7 @@ public class tweetscrapeGUI extends JFrame implements ActionListener
 			bottom = new JPanel();
 			Color color = UIManager.getColor ( "Panel.background" );
 			
-				top.add( txtArea );
+				top.add( scrollPane );
 			add(top, BorderLayout.NORTH);
 			readout.setBackground(color);
 			top.setBackground(color);
@@ -179,6 +181,11 @@ public class tweetscrapeGUI extends JFrame implements ActionListener
 		return true;
 	}
 	
+	/**
+	 * setRunning()
+	 * Description: setter for systemproperty variable, tells the GUI scraper is currently running?
+	 * @param	incRunning	boolean // scraper is currently running? 1 = yes, 0 = no
+	 */
 	public void setRunning(boolean incRunning){
 		running = incRunning;
 	}
@@ -269,7 +276,7 @@ public class tweetscrapeGUI extends JFrame implements ActionListener
 	
 	public void promptDBCreds()
 	{
-		outputText("Prompting user Database Credentials");
+		/*outputText("Prompting user Database Credentials");
 		String username = "";
 		String password = "";
 		String address = "";
@@ -284,6 +291,8 @@ public class tweetscrapeGUI extends JFrame implements ActionListener
 		tsDB.setDatabasePassword(password);
 		tsDB.setDatabaseAddress(address);
 		tsDB.setDatabasePort(port);
+		*/
+		tse.startDatabase();
 		
 	}
 	public void promptAPIkeys()
