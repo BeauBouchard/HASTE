@@ -1,7 +1,7 @@
 /**
  * Author: Beau Bouchard
- * Date: 4/2/2013
- * Last Updated: 7/1/2013
+ * Date: 2013/04/02
+ * Last Updated: 2013/10/01
  * Description: Used to access the database in the tweetscrape app.
  * 
  * 
@@ -94,15 +94,15 @@ public class tweetscrapeDB
    private void startConnection()
    {
  
-      //jdbc:mysql://localhost:3306/tweetscrapeapp
-      String url = databaseAddress+":"+databasePort+"/"+databaseName;
+      
+      String url = databaseAddress+":"+databasePort+"/"+databaseName; //jdbc:mysql://localhost:3306/databasename
       String driver = "com.mysql.jdbc.Driver";
-      String userName = "root";
-      String password = "lol like i am putting that here :P";
+      String userName = "user"; // replace with username of db writer
+      String password = "xxx"; // replace xxx with password
       try 
       {
          Class.forName(driver).newInstance();
-         conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/tweetscrapeapp",userName,password);
+         conn = DriverManager.getConnection("xxx",userName,password); //jdbc:mysql://localhost:3306/databasename
          System.out.println("Connected to the database");
       } 
       catch (SQLException qe) {
@@ -144,21 +144,38 @@ public class tweetscrapeDB
    String creationQuery = "";
    }
 	
-	public void insertTweet( tweetscrapeTweet inc_tweetobj)
+   /*
+    * insertTweet
+    * 
+    * inserts/saves the tweet to the database
+    * 
+    * @param inc_tweetobj A tweetscrapeTweet object which contains text, latitude, longitude and other information to be saved to the database
+    * @return 
+    */
+	public String insertTweet( tweetscrapeTweet inc_tweetobj)
 	{
+		String returnvarstring = "started, init";
 		tweetscrapeTweet tweet = inc_tweetobj;
-		PreparedStatement tweet_prest = null;
+		
 		String tweet_statement = "";
 		if(inc_tweetobj.getgeoLocation())
 		{
 			tweet_statement = "INSERT INTO  `ts_tweet` VALUES" + "(NULL , NULL , NULL,?,?,?,?,?)";
 			try{
-		        tweet_prest = conn.prepareStatement(tweet_statement);
+				PreparedStatement tweet_prest = conn.prepareStatement(tweet_statement);
 		        tweet_prest.setString(1, inc_tweetobj.getcreated_at()+"");
 		        tweet_prest.setString(2, inc_tweetobj.getcaptured_at()+"");
 		        tweet_prest.setString(3, inc_tweetobj.gettext()+"");
 		        tweet_prest.setDouble(4, inc_tweetobj.getlat());
 		        tweet_prest.setDouble(5, inc_tweetobj.getlon());
+		        
+		        try{
+					tweet_prest.executeUpdate();
+				}
+				catch( Exception e){
+					
+					System.out.println(e.getMessage());
+				}
 		        
 			}
 			catch( Exception e){}
@@ -167,23 +184,25 @@ public class tweetscrapeDB
 		{
 			try{
 				tweet_statement = "INSERT INTO  `ts_tweet` VALUES" + "(NULL , NULL , NULL,?,?,?)";
-		        tweet_prest = conn.prepareStatement(tweet_statement);
+				PreparedStatement tweet_prest = conn.prepareStatement(tweet_statement);
 		        tweet_prest.setString(1, inc_tweetobj.getcreated_at()+"");
 		        tweet_prest.setString(2, inc_tweetobj.getcaptured_at()+"");
 		        tweet_prest.setString(3, inc_tweetobj.gettext()+"");
+		        
+		        try{
+					tweet_prest.executeUpdate();
+				}
+				catch( Exception e){
+					
+					System.out.println(e.getMessage());
+				}
 			}
 			catch( Exception e){}
 		}
 		
 
-		try{
-			tweet_prest.executeUpdate();
-		}
-		catch( Exception e){
-			
-			System.out.println(e.getMessage());
-		}
-      
+		
+		return returnvarstring;
 		
 		/* (
 
