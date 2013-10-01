@@ -1,7 +1,7 @@
 /**
  * Author: Beau Bouchard
- * Date: 4/4/2013
- * Last Updated: 7/1/2013
+ * Date: 2013/04/04
+ * Last Updated: 2013/07/01
  * Description:  tweetscrapeEngine  - Class which will utilize Twitter4J 
  * Twitter4J from http://twitter4j.org/en/index.html Copyright 2007 Yusuke Yamamoto
  * 
@@ -199,6 +199,13 @@ public class tweetscrapeEngine
 		return timeStamp; 
 	}
 	
+	/*
+	 * saveStatus
+	 * 
+	 * saves the tweet status from the twitter4j object into my tweet object, then processes the database insert for the tweet status
+	 * 
+	 * @param 	status	twitter4j object for twitter status
+	 */
 	public void saveStatus(Status status)
 	{
 		tweetscrapeTweet tstobj = new tweetscrapeTweet();
@@ -207,7 +214,8 @@ public class tweetscrapeEngine
 		tstobj.setcaptured_at(getTimeStamp());
 		if(status.getGeoLocation() != null) {tstobj.setgeo(status.getGeoLocation());}
 		
-		tsDB.insertTweet(tstobj);
+		String returntext = tsDB.insertTweet(tstobj);
+		tsGUI.outputText("Proccessing tweet... " + returntext);
 		
 		
 		//save to new tweet object?
@@ -237,6 +245,7 @@ public class tweetscrapeEngine
 	            		 tsGUI.outputText(status.getText() + " - " + "@" + status.getUser().getScreenName()  );
 	            		// System.out.println("@" + status.getUser().getScreenName() + " - " + status.getText());
 	            		 saveStatus(status);
+	            		 
 	            	 }
 	            	 else{
 	            		// System.out.print("nope");
