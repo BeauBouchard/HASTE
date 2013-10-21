@@ -5,7 +5,6 @@
  * Description: Used to access the database in the tweetscrape app.
  * 
  * 
- *  
  **/
 
 import java.sql.*;
