@@ -140,7 +140,7 @@ public class tweetscrapeDB
    {
    
 	   //ZyRDvcZ4AWAGGNW4
-   String creationQuery = "";
+   	String creationQuery = "";
    }
 	
    /*
@@ -177,7 +177,9 @@ public class tweetscrapeDB
 				}
 		        
 			}
-			catch( Exception e){}
+			catch( Exception e){
+				System.out.println(e.getMessage());
+			}
 		}
 		else
 		{
