@@ -1,6 +1,7 @@
 /**
- * Author: Beau Bouchard
- * Date: January 21st, 2013
+ * Author: Beau Bouchard ( @beauboucahrd )
+ * Date: 2013/04/04
+ * Last Updated: 2014/01/23
  * Description: Main class for the tweetscape app. 
  * 
  * This file is part of tweetscape. It is dependant on one or more other codebases, 
@@ -29,32 +30,14 @@
  *  
  */
 
-
 import twitter4j.*;
-
 
 public class tweetscrapeMain
 {
-  
-	
-	
 	public static void main(String [] args )
 	{
-
-		tweetscrapeDB tsDB = new tweetscrapeDB(); // connection to the database 
-	
-		tweetscrapeGUI tsGUI = new tweetscrapeGUI(tsDB);
-		tsGUI.initializeGUI();
-		
-
-		
-		
-		
-		
-		// initialize the GUI
-		
-		// creating a database 
+		//tweetscrapeDB tsDB = new tweetscrapeDB();  // connection to the database 
+		tweetscrapeGUI tsGUI = new tweetscrapeGUI(); // passing the database to newly created GUI
+		tsGUI.initializeGUI(); // initialize 
 	}
-
-
 }// end of main class
