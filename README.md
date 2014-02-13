@@ -8,7 +8,9 @@ Author: Beau Bouchard (@beaubouchard)
 Usage 
 ---
 
-# sh bin/run.sh
+```
+ sh bin/run.sh
+```
 
 You will need to include the twitter4j class path into your Java Build Path inorder to run this applciation. 
 
