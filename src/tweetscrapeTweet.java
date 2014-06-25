@@ -16,18 +16,6 @@ import twitter4j.*;
 import twitter4j.conf.*;
 
 public class tweetscrapeTweet {
-
-   /*
-    * 
-    * 				`tweetid` ,
-				`fk_sessionid` ,
-				`fk_twitteruserid` ,
-				`created_at` ,
-				`captured_at` ,
-				`text` ,
-				`lat` ,
-				`long`
-    * */
     
 	private int tweetid; //Unique
 	private int fk_sessionid; //the id of the scrape
@@ -42,18 +30,13 @@ public class tweetscrapeTweet {
 	//Geolocation -- from obj class Geolocation
 	private boolean geoLocation; //if true, there are lat long
    
-	
 	public tweetscrapeTweet()
 	{
-		
-	
 		
 	}
 	
 	public tweetscrapeTweet(int inc_twitterID, String text)
 	{
-		
-	
 		
 	}
 	
