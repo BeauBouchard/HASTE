@@ -1,7 +1,8 @@
 /**
- * Author: Beau Bouchard
- * Date: 2013/04/02
- * Last Updated: 2013/10/01
+ * @author Beau Bouchard ( @beaubouchard )
+ * Date: 2013/04/04
+ * Last Updated: August 12th, 2014
+ * <p>
  * Description: Used to access the database in the haste app.
  * 
  * 

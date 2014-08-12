@@ -88,6 +88,17 @@ public class hasteGUI extends JFrame implements ActionListener
 		setSize( 800, 600 );
 		setLocationRelativeTo(null);
 		setLayout(new BorderLayout());
+		
+		initMenu();
+		initCon();
+			
+			setDefaultCloseOperation( DO_NOTHING_ON_CLOSE ); //if you close the window when scraping, it causes problems when re-opening. 
+			//going to force a disconnect and manual file->exit
+			setVisible( true );
+	}
+	
+	public void initMenu() {
+
 		JMenuBar topmenu = new JMenuBar();
 		setJMenuBar(topmenu);
 		
@@ -117,31 +128,6 @@ public class hasteGUI extends JFrame implements ActionListener
 			topmenu.add(help);
 				help.add(about);
 				
-			//txtArea.setLineWrap(true);
-			txtArea = new JTextArea(16,70);
-			//txtArea.setLineWrap(true);
-			JScrollPane scrollPane = new JScrollPane(txtArea); 
-			
-			
-			JPanel top = new JPanel();
-			JPanel center = new JPanel();
-			
-			bottom = new JPanel();
-			Color color = UIManager.getColor ( "Panel.background" );
-			
-				top.add( scrollPane );
-			add(top, BorderLayout.NORTH);
-			readout.setBackground(color);
-			top.setBackground(color);
-			center.setBackground(color);
-			bottom.setBackground(color);
-			//.setOpaque(true);
-			
-			bottom.setLayout(new GridLayout(1,2));
-			bottom.add(readout);
-			center.setLayout(new GridLayout(2,1));
-			add(center, BorderLayout.CENTER);
-			add(bottom, BorderLayout.SOUTH);
 			
 			about.addActionListener(this);
 			exit.addActionListener(this);
@@ -151,10 +137,43 @@ public class hasteGUI extends JFrame implements ActionListener
 			savelog.addActionListener(this);
 			apikeys.addActionListener(this);
 			dbcreds.addActionListener(this);
-			
-			setDefaultCloseOperation( DO_NOTHING_ON_CLOSE ); //if you close the window when scraping, it causes problems when re-opening. 
-			//going to force a disconnect and manual file->exit
-			setVisible( true );
+	}
+	
+	//This is the console output. Just a scrollable text field which acts as a log.
+	public void initCon() {
+		
+		//ImageIcon icon = new ImageIcon(this.getClass().getResource("lib/data/icon/log.png"));
+		//txtArea.setLineWrap(true);
+		txtArea = new JTextArea(16,70);
+		//txtArea.setLineWrap(true);
+		JTabbedPane tPane = new JTabbedPane();
+		
+		JScrollPane scrollPane = new JScrollPane(txtArea); 
+		
+		
+		JPanel top = new JPanel();
+		JPanel center = new JPanel();
+		
+		bottom = new JPanel();
+		Color color = UIManager.getColor ( "Panel.background" );
+		
+		top.add( scrollPane );
+		tPane.addTab("Console", top);
+		
+		
+		//set colors
+		readout.setBackground(color);
+		top.setBackground(color);
+		center.setBackground(color);
+		bottom.setBackground(color);
+		//.setOpaque(true);
+		
+		bottom.setLayout(new GridLayout(1,2));
+		bottom.add(readout);
+		center.setLayout(new GridLayout(2,1));
+		add(center, BorderLayout.CENTER);
+		add(bottom, BorderLayout.SOUTH);
+		add(tPane, BorderLayout.NORTH);
 	}
 	
 	/**

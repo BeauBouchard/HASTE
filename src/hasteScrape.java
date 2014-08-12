@@ -1,8 +1,9 @@
 /**
- * Author: Beau Bouchard ( @beauboucahrd )
+ * @author Beau Bouchard ( @beaubouchard )
  * Date: 2013/04/04
- * Last Updated: 2014/01/23
- * Description: 
+ * Last Updated: August 12th, 2014
+ * <p>
+ * Description:
  *          Each tweet entity will be linked to a scrape, a scrape is a time frame in which the haste application is 
  *    recording tweets using a specific filter, the searchREGEX is that regular expression filter. 
  * 

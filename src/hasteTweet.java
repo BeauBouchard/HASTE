@@ -1,7 +1,8 @@
 /**
- * Author: Beau Bouchard
+ * @author Beau Bouchard ( @beaubouchard )
  * Date: 2013/04/04
- * Last Updated: 2014/01/23
+ * Last Updated: August 12th, 2014
+ * <p>
  * Description: Used to store each tweet as object which will then be saved into database
  * 
  * ts_f_tweet

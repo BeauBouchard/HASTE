@@ -1,7 +1,8 @@
 /**
- * Author: Beau Bouchard ( @beauboucahrd )
+ * @author Beau Bouchard ( @beaubouchard )
  * Date: 2013/04/04
  * Last Updated: August 12th, 2014
+ * <p>
  * Description: Main class for the haste app. 
  * 
  * This file is part of haste. It is dependent on one or more other codebases, such as Twitter4J by @yusuke

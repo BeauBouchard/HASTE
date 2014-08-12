@@ -1,7 +1,8 @@
 /**
- * Author: Beau Bouchard
+ * @author Beau Bouchard ( @beaubouchard )
  * Date: 2013/04/04
- * Last Updated: 2014/01/23
+ * Last Updated: August 12th, 2014
+ * <p>
  * Description: 
  * 
  *       ts_tweets, the main tweet object will have a many to one relationship with this (ts_twitteruser) many tweets which are all mapped to the same username. 
