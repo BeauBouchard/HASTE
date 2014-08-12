@@ -1,8 +1,8 @@
 
 /**
- * Author: Beau Bouchard
- * Date: January 21st, 2013
- * Last Updated: 2013/05/06
+ * @author: Beau Bouchard
+ * Date: August 12th, 2014
+ * <p>
  * Description: GUI class for the tweetscape app. 
  * 
  * 
@@ -64,37 +64,27 @@ public class hasteGUI extends JFrame implements ActionListener
    
   
    
-	public hasteGUI()
-   {
-		try
-		{
+	public hasteGUI(){
+		try{
 			tse = new hasteEngine(this);
+		}catch(Exception tw){
+			//catching general exceptions [[temp]]
 		}
-		catch(Exception tw)
-		{
-			
-		}
-      
-      try
-		{
+		try{
 			tsDB = new hasteDB(this);
-		}
-		catch(Exception tw)
-		{
-			
+		}catch(Exception tw){
+			//catching general exceptions [[temp]]
 		}
 	}
    
-	public hasteGUI(String inc_str) 
-	{
+	
+	public hasteGUI(String inc_str){
 		
 	
 	}
 	
 	public void initializeGUI() {
-		
-
-		setTitle("haste -- Scrape twitter the easy way");
+		setTitle("HASTE -- Hazardous Alert System for Twitter Environment");
 		setSize( 800, 600 );
 		setLocationRelativeTo(null);
 		setLayout(new BorderLayout());
@@ -161,11 +151,10 @@ public class hasteGUI extends JFrame implements ActionListener
 			savelog.addActionListener(this);
 			apikeys.addActionListener(this);
 			dbcreds.addActionListener(this);
-		
 			
-			setDefaultCloseOperation( DO_NOTHING_ON_CLOSE );
+			setDefaultCloseOperation( DO_NOTHING_ON_CLOSE ); //if you close the window when scraping, it causes problems when re-opening. 
+			//going to force a disconnect and manual file->exit
 			setVisible( true );
-			
 	}
 	
 	/**
